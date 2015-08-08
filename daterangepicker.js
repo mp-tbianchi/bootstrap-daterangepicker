@@ -293,6 +293,9 @@
                   this.container.find('.applyBtn, .cancelBtn').addClass('hide');
             }
 
+            if (typeof options.isInvalidDate === 'function')
+                this.isInvalidDate = options.isInvalidDate;
+
             // update day names order to firstDay
             if (this.locale.firstDay != 0) {
                 var iterator = this.locale.firstDay;
@@ -497,6 +500,10 @@
             this.updateView();
             this.updateCalendars();
             this.updateInputText();
+        },
+
+        isInvalidDate: function() {
+            return false;
         },
 
         updateView: function () {
@@ -1165,7 +1172,7 @@
                         cname += ' today ';
                     }
 
-                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
+                    if ((this.isInvalidDate(calendar[row][col])) || (minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
                         cname = ' off disabled ';
                     } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
